@@ -1,5 +1,6 @@
 package se.lexicon;
 
+import java.util.Arrays;
 /**
  * The NameRepository class provides methods to manage a list of names.
  * It offers functionalities such as adding, removing, finding, and updating names.
@@ -8,7 +9,6 @@ public class NameRepository {
 
     private static String[] names = new String[0];
 
-
     /**
      * Retrieves the current size of the names array.
      *
@@ -16,7 +16,12 @@ public class NameRepository {
      */
     public static int getSize() {
         //todo: implement getSize method
-        return 0;
+
+        int numOfNames = names.length;
+
+        System.out.println(numOfNames);
+
+        return numOfNames;
     }
 
 
@@ -27,6 +32,8 @@ public class NameRepository {
      */
     public static void setNames(String[] names) {
         //todo: implement setNames method
+
+        Arrays.fill(names, "Insert Name Here");
     }
 
 
@@ -35,6 +42,13 @@ public class NameRepository {
      */
     public static void clear() {
         //todo: implement clear method
+
+        names = new String[names.length];
+
+        System.out.println("After clearing: ");
+        for (String name : names) {
+            System.out.println(name);
+        }
     }
 
 
@@ -45,7 +59,14 @@ public class NameRepository {
      */
     public static String[] findAll() {
         //todo: implement findAll method
-        return null;
+
+        //Enhanced for loop
+        Arrays.sort(names, String.CASE_INSENSITIVE_ORDER);
+
+        for(String name : names) {
+            System.out.println(name);
+        }
+        return names;
     }
 
 
@@ -57,6 +78,7 @@ public class NameRepository {
      */
     public static String find(String fullName) {
         //todo: implement find method
+
         return null;
     }
 
@@ -69,6 +91,7 @@ public class NameRepository {
      */
     public static boolean add(String fullName) {
         //todo: implement add method
+
         return false;
     }
 
@@ -81,6 +104,7 @@ public class NameRepository {
      */
     public static String[] findByFirstName(String firstName) {
         //todo: findByFirstName method
+
         return null;
     }
 

@@ -19,8 +19,6 @@ public class NameRepository {
 
         int numOfNames = names.length;
 
-        System.out.println(numOfNames);
-
         return numOfNames;
     }
 
@@ -33,7 +31,7 @@ public class NameRepository {
     public static void setNames(String[] names) {
         //todo: implement setNames method
 
-        Arrays.fill(names, "Insert Name Here");
+        NameRepository.names = Arrays.copyOf(names, names.length);
     }
 
 
@@ -43,12 +41,7 @@ public class NameRepository {
     public static void clear() {
         //todo: implement clear method
 
-        names = new String[names.length];
-
-        System.out.println("After clearing: ");
-        for (String name : names) {
-            System.out.println(name);
-        }
+        names = new String[0];
     }
 
 
@@ -60,13 +53,7 @@ public class NameRepository {
     public static String[] findAll() {
         //todo: implement findAll method
 
-        //Enhanced for loop
-        Arrays.sort(names, String.CASE_INSENSITIVE_ORDER);
-
-        for(String name : names) {
-            System.out.println(name);
-        }
-        return names;
+        return Arrays.copyOf(names, names.length);
     }
 
 
@@ -79,6 +66,11 @@ public class NameRepository {
     public static String find(String fullName) {
         //todo: implement find method
 
+        for (String name : names) {
+            if (name.equalsIgnoreCase(fullName)) {
+                return name;
+            }
+        }
         return null;
     }
 
@@ -92,7 +84,13 @@ public class NameRepository {
     public static boolean add(String fullName) {
         //todo: implement add method
 
-        return false;
+        if (find(fullName) != null) {
+            return false;
+        }
+
+        names = Arrays.copyOf(names, names.length + 1);
+        names[names.length - 1] = fullName;
+        return true;
     }
 
 
@@ -105,7 +103,22 @@ public class NameRepository {
     public static String[] findByFirstName(String firstName) {
         //todo: findByFirstName method
 
-        return null;
+        String[] result = new String[0];
+        for (String element : names) {
+            String[] fullNameArray = element.split(" ");
+            String fn = fullNameArray[0];
+
+            if (fn.equalsIgnoreCase(firstName)) {
+                result = addToArray(result, element);
+            }
+        }
+        return result;
+    }
+
+    private static String[] addToArray(String[] source, String newName) {
+        String[] tmp = Arrays.copyOf(source, source.length + 1);
+        tmp[tmp.length - 1] = newName;
+        return tmp;
     }
 
 
@@ -117,7 +130,17 @@ public class NameRepository {
      */
     public static String[] findByLastName(String lastName) {
         //todo: implement findByLastName method
-        return null;
+
+        String[] result = new String[0];
+        for (String element : names) {
+            String[] fullNameArray = element.split(" ");
+            String fn = fullNameArray[0];
+
+            if (fn.equalsIgnoreCase(lastName)) {
+                result = addToArray(result, element);
+            }
+        }
+        return result;
     }
 
 
@@ -130,7 +153,13 @@ public class NameRepository {
      */
     public static boolean update(String original, String updatedName) {
         //todo: implement update method
-        return false;
+
+        int originalIndex = indexOf(names, original);
+        if (originalIndex == -1 || find(updatedName) != null) {
+            return false;
+        }
+        names[originalIndex] = updatedName;
+        return true;
     }
 
 
@@ -142,7 +171,50 @@ public class NameRepository {
      */
     public static boolean remove(String fullName) {
         //todo: implement remove method
-        return false;
+
+        fullName = fullName.toLowerCase();
+        int findIndex = -1;
+        for (int i = 0; i < names.length; i++) {
+            if (names[i].toLowerCase().equals(fullName)) {
+                findIndex = i;
+                break;
+            }
+        }
+
+        if (findIndex == -1) {
+            return false;
+        }
+
+        String[] anotherArray = new String[names.length - 1];
+        int sequencer = 0;
+        for (int i = 0; i < names.length; i++) {
+            if (i == findIndex) {
+                continue;
+            }
+            anotherArray[sequencer++] = names[i];
+        }
+        names = anotherArray;
+        return true;
+    }
+
+    private static String[] findByAttribute(String attribute, int index) {
+        String[] result = new String[0];
+        for (String name : names) {
+            String[] fullNameArray = name.split(" ");
+            if (fullNameArray.length > index && fullNameArray[index].equalsIgnoreCase(attribute)) {
+                result = addToArray(result, name);
+            }
+        }
+        return result;
+    }
+
+    private static int indexOf(String[] array, String element) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equalsIgnoreCase(element)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 
